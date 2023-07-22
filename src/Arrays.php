@@ -1,6 +1,6 @@
 <?php
 
-namespace Helvetiapps\LiveControls\Utils;
+namespace LiveControls\Utils;
 
 class Arrays
 {
