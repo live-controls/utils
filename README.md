@@ -1,4 +1,8 @@
 # Utils Package for LiveControls
+ ![Release Version](https://img.shields.io/github/v/release/live-controls/utils)
+ ![Packagist Version](https://img.shields.io/packagist/v/live-controls/utils?color=%23007500)
+
+Utilities Package for LiveControls. Some of the other LiveControls packages will depend on this library.
 
 ## Usage
 
