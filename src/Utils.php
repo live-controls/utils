@@ -18,16 +18,6 @@ class Utils
         return $num !== 0 ? floor(log10($num) + 1) : 1;
     }
 
-
-    public static function int2Day(int $val, bool $useLong = false): string
-    {
-        if($useLong)
-        {
-            return __('Day_Long_'.$val);
-        }
-        return __('Day_'.$val);
-    }
-
     /**
      * Calculates the days between $fromDay and $toDay over a specific month
      *
