@@ -55,6 +55,17 @@ echo $array; //['someOtherValue']
 * [sub][/sub]
 * [sup][/sup]
 
+### Blogging
+
+#### estimatedReadingTime
+Calculates the estimated reading time of a text in minutes, based on the words per minute
+
+```php
+$text = "This is a text with 400 words [...]"; //Imagine this text as 400 words long
+echo estimatedReadingTime($text); //Would return 2 (minutes) as the default words per minute rate is 200
+echo estimatedReadingTime($text, 100); //Would return 4 (minutes) as the second parameter of the function acts as words per minute 
+```
+
 ### Utils
 
 #### countNumber
