@@ -56,4 +56,34 @@ class Arrays
         }
         $array = $newArray;
     }
+
+    /**
+     * Checks if the array $array has duplicate values inside it
+     *
+     * @param array $array
+     * @param boolean $strict
+     * @return boolean
+     */
+    public static function array_has_duplicates(array $array, bool $strict = false):bool{
+        return count(static::array_get_duplicates($array, $strict)) > 0;
+    }
+
+    /**
+     * Returns all duplicate values as array
+     *
+     * @param array $array
+     * @param boolean $strict
+     * @return array
+     */
+    public static function array_get_duplicates(array $array, bool $strict = false):array{
+        $dupes = [];
+        $vals = [];
+        foreach($array as $value)
+        {
+            if(in_array($value, $vals, $strict) && !in_array($value, $dupes, $strict)){
+                array_push($dupes, $value);
+            }
+        }
+        return $dupes;
+    }
 }
