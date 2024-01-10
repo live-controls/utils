@@ -20,16 +20,20 @@ class Arrays
     }
 
     /**
-     * Removed $array[$key] and overwrites the $array with the new array
+     * Removes $array[$key] and overwrites the $array with a new array
      *
-     * @param [type] $key
+     * @param mixed $keyValue
      * @param array $array
+     * @param bool $isValue if true it will internally call array_remove_value()
      * @return void
      */
-    public static function array_remove($key, array &$array){
+    public static function array_remove(mixed $keyValue, array &$array, bool $isValue = false){
         $newArray = [];
+        if($isValue){
+            return static::array_remove_value($keyValue, $array);
+        }
         foreach($array as $oldKey => $oldValue){
-            if($oldKey != $key){
+            if($oldKey != $keyValue){
                 $newArray[$oldKey] = $oldValue;
             }
         }
@@ -39,11 +43,11 @@ class Arrays
     /**
      * Removes the value $value inside $array and overwrites $array with the new array
      *
-     * @param [type] $value
+     * @param mixed $value
      * @param array $array
      * @return void
      */
-    public static function array_remove_value($value, array &$array){
+    public static function array_remove_value(mixed $value, array &$array){
         $newArray = [];
         foreach($array as $oldValue){
             if($oldValue != $value){
