@@ -31,6 +31,32 @@ array_remove_value('someValue', $array);
 echo $array; //['someOtherValue']
 ```
 
+#### array_has_duplicates
+
+```php
+$array['someValue', 'someOtherValue'];
+echo array_has_duplicates($array); //returns false
+$array2['key1' => 'someValue', 'key2' => 'someValue'];
+echo array_has_duplicates($array2); //returns true
+$array3['1984', 1984];
+echo array_has_duplicates($array3, true); //returns false, because type of value 0 is different than from value 1
+$array4[1984, 1984];
+echo array_has_duplicates($array4, true); //returns true, because type of value 0 and value 1 are identical
+```
+
+#### array_get_duplicates
+
+```php
+$array['someValue', 'someOtherValue'];
+echo array_get_duplicates($array); //returns an empty array
+$array2['key1' => 'someValue', 'key2' => 'someValue'];
+echo array_get_duplicates($array2); //returns an array ['someValue']
+$array3['1984', 1984];
+echo array_get_duplicates($array3, true); //returns an empty array, because type of value 0 is different than from value 1
+$array4[1984, 1984];
+echo array_get_duplicates($array4, true); //returns an array [1984], because type of value 0 and value 1 are identical
+```
+
 ### BBCodes
 
 #### Valid bb tags
