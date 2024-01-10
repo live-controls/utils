@@ -121,7 +121,7 @@ Adds leading zeros to a number
 
 ```php
 echo leadingZeros(10, 4, false); //returns 0010
-echo leadingZeros(10, 1, true); //throws exception because thrid parameter (isMax) is true and the number has more than 1 digit (second parameter {length})
+echo leadingZeros(10, 1, true); //throws exception because third parameter (isMax) is true and the number has more than 1 digit (second parameter {length})
 ```
 
 #### number2Currency
