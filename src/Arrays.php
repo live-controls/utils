@@ -83,6 +83,7 @@ class Arrays
             if(in_array($value, $vals, $strict) && !in_array($value, $dupes, $strict)){
                 array_push($dupes, $value);
             }
+            array_push($vals, $value);
         }
         return $dupes;
     }
