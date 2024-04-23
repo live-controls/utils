@@ -163,7 +163,7 @@ class Utils
      * @param bool $escapeVars If set to true, PHP variables like $var will be escaped in the formula and will include every $ character (not in variables!)
      * @return int|float|false|null Returns a numeric value of the result of the formula, false if an exception was thrown or null if the formula didn't return a numeric value
      */
-    public static function calculateFormulas(string $formula, array $variables, bool $escapeVars = false)
+    public static function calculateFormulas(string $formula, array $variables, bool $escapeVars = false, array $additionalEscapes = [])
     {
         $result = floatval($formula);
         if (is_numeric($result)) {
@@ -171,6 +171,10 @@ class Utils
         }
         if($escapeVars == true){
             $result = str_replace("$", "", $result);
+        }
+
+        foreach($additionalEscapes as $esc){
+            $result = str_replace($esc, "", $result);
         }
 
         foreach($variables as $var => $val){
