@@ -160,15 +160,19 @@ class Utils
      *
      * @param string $formula The formula can consist of mathematic operations and variables
      * @param array $variables Variables are made out of a key which will be inside the formula and will be replaced and a value which will be the value the variable in the formula will be replaced
+     * @param bool $escapeVars If set to true, PHP variables like $var will be escaped in the formula and will include every $ character (not in variables!)
      * @return int|float|false|null Returns a numeric value of the result of the formula, false if an exception was thrown or null if the formula didn't return a numeric value
      */
-    public static function calculateFormulas(string $formula, array $variables)
+    public static function calculateFormulas(string $formula, array $variables, bool $escapeVars = false)
     {
         $result = floatval($formula);
         if (is_numeric($result)) {
             return $result;
         }
-        
+        if($escapeVars == true){
+            $result = str_replace("$", "", $result);
+        }
+
         foreach($variables as $var => $val){
             $formula = str_replace($var, $val, $formula);
         }
