@@ -188,4 +188,9 @@ class Utils
             return false;
         }
     }
+
+    public static function toInteger(string $value):int
+    {
+        return preg_replace('/\D/', '', $value);
+    }
 }
