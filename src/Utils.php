@@ -189,6 +189,12 @@ class Utils
         }
     }
 
+    /**
+     * Removes all non-numeric characters from a string and returns an integer
+     *
+     * @param string $value
+     * @return integer
+     */
     public static function toInteger(string $value):int
     {
         return preg_replace('/\D/', '', $value);
