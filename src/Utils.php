@@ -199,4 +199,16 @@ class Utils
     {
         return preg_replace('/\D/', '', $value);
     }
+
+    /**
+     * Checks if a string contains a certain needle
+     *
+     * @param string $haystack
+     * @param string $needle
+     * @return boolean
+     */
+    public static function stringContains(string $haystack, string $needle): bool
+    {
+        return $needle !== '' && str_contains($haystack, $needle);
+    }
 }
