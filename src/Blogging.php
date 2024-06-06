@@ -16,4 +16,31 @@ class Blogging
         $wordsCount = str_word_count($text);
         return round($wordsCount / $wordsPerMinute);
     }
+
+    /**
+     * Replaces links like https://www.google.com with a html link
+     *
+     * @param string $text
+     * @param bool $targetBlank
+     * @param string $linkText
+     * @return string
+     */
+    public static function linksToHtml(string $text, bool $targetBlank = false, string $linkText = ""): string
+    {
+        $url_regex = "/\b((https?:\/\/?|www\.)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/)))/";
+
+        $text = htmlspecialchars($text, ENT_QUOTES, 'UTF-8');
+
+        
+        preg_match_all($url_regex, $text, $urls);
+
+        foreach ($urls[0] as $url) {
+            if(Utils::isNullOrEmpty($linkText)){
+                $linkText = $url;
+            }
+            $text = str_replace($url, "<a href='$url'".($targetBlank ? " target='_blank'" : '').">$linkText</a>", $text);
+        }
+
+        return $text;
+    }
 }
