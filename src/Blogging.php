@@ -22,10 +22,11 @@ class Blogging
      *
      * @param string $text
      * @param bool $targetBlank
+     * @param string $class
      * @param string $linkText
      * @return string
      */
-    public static function linksToHtml(string $text, bool $targetBlank = false, string $linkText = ""): string
+    public static function linksToHtml(string $text, bool $targetBlank = false, string $class = "", string $linkText = ""): string
     {
         $url_regex = "/\b((https?:\/\/?|www\.)[^\s()<>]+(?:\([\w\d]+\)|([^[:punct:]\s]|\/)))/";
 
@@ -38,7 +39,7 @@ class Blogging
             if(Utils::isNullOrEmpty($linkText)){
                 $linkText = $url;
             }
-            $text = str_replace($url, "<a href='$url'".($targetBlank ? " target='_blank'" : '').">$linkText</a>", $text);
+            $text = str_replace($url, "<a href='$url'".($targetBlank ? " target='_blank'" : '').(Utils::isNullOrEmpty($class) ? '' : " class='".$class."'").">$linkText</a>", $text);
         }
 
         return $text;
