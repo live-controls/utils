@@ -193,11 +193,15 @@ class Utils
      * Removes all non-numeric characters from a string and returns an integer
      *
      * @param string $value
-     * @return integer
+     * @return integer|null Returns null if value can't be made an integer
      */
-    public static function toInteger(string $value):int
+    public static function toInteger(string $value):int|null
     {
-        return preg_replace('/\D/', '', $value);
+        $value = preg_replace('/\D/', '', $value);
+        if(!is_int($value)){
+            return null;
+        }
+        return $value;
     }
 
     /**
