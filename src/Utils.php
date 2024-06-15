@@ -198,7 +198,7 @@ class Utils
     public static function toInteger(string $value):int|null
     {
         $value = preg_replace('/\D/', '', $value);
-        if(!is_int($value)){
+        if(!is_numeric($value)){
             return null;
         }
         return $value;
