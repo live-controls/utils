@@ -89,4 +89,21 @@ class Arrays
         }
         return $dupes;
     }
+
+    public static function array_remove_duplicates(array $array, bool $strict = false): array
+    {
+        $newArr = [];
+        $dupes = [];
+        $vals = [];
+        foreach($array as $value)
+        {
+            if(in_array($value, $vals, $strict) && !in_array($value, $dupes, $strict)){
+                array_push($dupes, $value);
+            }
+            else if(!in_array($value, $vals, $strict)){
+                array_push($vals, $value);
+            }
+        }
+        return $dupes;
+    }
 }
