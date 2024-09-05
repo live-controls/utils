@@ -210,7 +210,7 @@ class Utils
      * @param string $value
      * @return int|string
      */
-    public static function toNumeric(string $value):int|string
+    public static function toNumeric(string $value):int|string|null
     {
         $value = preg_replace('/\D/', '', $value);
         if(!is_numeric($value)){
