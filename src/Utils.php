@@ -264,4 +264,38 @@ class Utils
         $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
         return $cpf[10] === $secondDigit;
     }
+
+    /**
+     * Checks if the CNPJ number is valid
+     *
+     * @param string $cnpj
+     * @return boolean
+     */
+    public static function isValidCNPJ(string $cnpj)
+    {
+        $cnpj = preg_replace('/[^0-9]/', '', $cnpj);
+        $cnpj = ltrim($cnpj, '0');
+        if (strlen($cnpj) !== 14) {
+            return false;
+        }
+        if (preg_match('/(\d)\1{12}/', $cnpj)) {
+            return false;
+        }
+        $sum = 0;
+        for ($i = 0; $i < 12; $i++) {
+            $sum += $cnpj[$i] * (15 - $i);
+        }
+        $remainder = $sum % 11;
+        $firstDigit = $remainder < 2 ? 0 : 11 - $remainder;
+        if ($cnpj[12] !== $firstDigit) {
+            return false;
+        }
+        $sum = 0;
+        for ($i = 0; $i < 13; $i++) {
+            $sum += $cnpj[$i] * (16 - $i);
+        }
+        $remainder = $sum % 11;
+        $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
+        return $cnpj[13] === $secondDigit;
+    }
 }
