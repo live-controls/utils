@@ -230,4 +230,38 @@ class Utils
     {
         return $needle !== '' && str_contains($haystack, $needle);
     }
+
+    /**
+     * Checks if the CPF number is valid
+     *
+     * @param string $cpf
+     * @return boolean
+     */
+    public static function isValidCPF(string $cpf): bool
+    {
+        $cpf = preg_replace('/[^0-9]/', '', $cpf);
+        $cpf = ltrim($cpf, '0');
+        if (strlen($cpf) !== 11) {
+            return false;
+        }
+        if (preg_match('/(\d)\1{9}/', $cpf)) {
+            return false;
+        }
+        $sum = 0;
+        for ($i = 0; $i < 9; $i++) {
+            $sum += $cpf[$i] * (10 - $i);
+        }
+        $remainder = $sum % 11;
+        $firstDigit = $remainder < 2 ? 0 : 11 - $remainder;
+        if ($cpf[9] !== $firstDigit) {
+            return false;
+        }
+        $sum = 0;
+        for ($i = 0; $i < 10; $i++) {
+            $sum += $cpf[$i] * (11 - $i);
+        }
+        $remainder = $sum % 11;
+        $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
+        return $cpf[10] === $secondDigit;
+    }
 }
