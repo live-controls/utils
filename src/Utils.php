@@ -3,6 +3,7 @@
 namespace LiveControls\Utils;
 
 use Exception;
+use Transliterator;
 
 class Utils
 {
@@ -297,5 +298,18 @@ class Utils
         $remainder = $sum % 11;
         $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
         return $cnpj[13] === $secondDigit;
+    }
+
+    /**
+     * Converts string to a string with only latin characters
+     *
+     * @param string $str
+     * @return string
+     * @requires php-intl
+     */
+    public static function toLatin(string $str): string
+    {
+        $transliterator = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: Lower(); :: NFC;', Transliterator::FORWARD);
+        return $transliterator->transliterate($str);
     }
 }
