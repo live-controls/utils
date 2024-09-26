@@ -312,4 +312,20 @@ class Utils
         $transliterator = Transliterator::createFromRules(':: Any-Latin; :: Latin-ASCII; :: NFD; :: [:Nonspacing Mark:] Remove; :: Lower(); :: NFC;', Transliterator::FORWARD);
         return $transliterator->transliterate($str);
     }
+
+    /**
+     * Imports CSV from a file and returns an array with headers as first line
+     *
+     * @param string $fileName
+     * @return array
+     */
+    public static function importCSV(string $fileName)
+    {
+        $csv = array_map('str_getcsv', file($fileName));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv);
+        return $csv;
+    }
 }
