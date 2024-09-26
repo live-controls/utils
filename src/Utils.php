@@ -131,6 +131,13 @@ class Utils
         return $nf->format($number);
     }
 
+    /**
+     * Converts an array to string with a delimiter
+     * 
+     * @param array $array
+     * @param string $delimiter
+     * @return string
+     */
     public static function array2String(array $array, string $delimiter = ', '): string
     {
         $str = '';
