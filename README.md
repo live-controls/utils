@@ -130,3 +130,72 @@ Transforms a number into its currency counterpart. Needs NumberFormatter for it 
 ```php
 echo number2Currency(1000.20, 'pt_br', 'USD'); //returns $1.000,20
 ```
+
+#### array2String
+Converts an array to string with a delimiter
+
+```php
+echo array2String(['a','b','c'], '; '); //returns a; b; c
+```
+
+#### isNullOrEmpty
+Checks if the string is null or empty
+
+```php
+echo isNullOrEmpty(' '); //returns true
+```
+
+#### calculateFormulas
+TODO, do not use as this is in the testing phase!
+
+#### toInteger
+Removes all non-numeric characters and leading zeros from a string and returns an integer
+
+```php
+echo toInteger('a1234'); //returns 1234
+echo toInteger('a01234'); //IMPORTANT, this would also return 1234 as an integer cant start with 0. In this case use toNumeric()
+```
+
+#### toNumeric
+Removes all non-numeric characters from a string and returns an integer or string if it starts with a 0
+
+```php
+echo toNumeric('a01234'); //returns a string 01234
+echo toNumeric('a1234'); //returns an integer 1234
+```
+
+#### stringContains
+Checks if a string contains a certain needle
+
+```php
+echo stringContains('Test', 'T'); //returns true
+echo stringContains('Test', 'Q'); //returns false
+```
+
+#### isValidCPF
+Checks if the CPF number is valid
+
+```php
+echo isValidCPF('UM_CPF_VALIDO'); //returns true if cpf is valid
+```
+
+#### isValidCNPJ
+Checks if the CNPJ number is valid
+
+```php
+echo isValidCNPJ('UM_CNPJ_VALIDO'); //returns true if cnpj is valid
+```
+
+#### toLatin
+Converts string to a string with only latin characters
+
+```php
+echo toLatin('càdé'); //returns cade
+```
+
+#### importCSV
+Imports CSV from a file and returns an array with headers as first line
+
+```php
+echo importCSV('test.csv'); //returns the content of the file test.csv as array with its first line as header
+```
