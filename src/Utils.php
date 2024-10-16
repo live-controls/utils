@@ -339,6 +339,9 @@ class Utils
     /**
      * Create an URL based on different parts. It will check if the part starts or ends with / and react to it.
      * At the end it will check if the Url is valid
+     *
+     * @param string ...$parts
+     * @return string
      */
     public static function urlCombine(string ...$parts): string
     {
