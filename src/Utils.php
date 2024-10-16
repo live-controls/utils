@@ -335,4 +335,31 @@ class Utils
         array_shift($csv);
         return $csv;
     }
+
+    /**
+     * Create an URL based on different parts. It will check if the part starts or ends with / and react to it.
+     * At the end it will check if the Url is valid
+     */
+    public static function urlCombine(string ...$parts): string
+    {
+        $url = "";
+        foreach($parts as $part)
+        {
+            if($url == ""){
+                if(!str_starts_with($part, 'http://') && !str_starts_with($part, 'https://') && !str_starts_with($part, 'ftp://')){
+                    $part = "https://".$part;
+                }
+                $url = $part;
+                continue;
+            }
+            if(!str_starts_with($part, '/')){
+                $part = '/'.$part;
+            }
+            if(str_ends_with($part, '/')){
+                $part = substr($part, 0, -1);
+            }
+            $url .= $part;
+        }
+        return $url;
+    }
 }
