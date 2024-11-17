@@ -107,33 +107,29 @@ class Arrays
         return $dupes;
     }
 
-    public static function array_get_combinations(array ...$arrays)
+    /**
+     * Gets the cartesian combinations from a list of arrays [[1,2], [3]] would return [[1,3], [2,3]]
+     *
+     * @param array $arrays
+     * @return array
+     */
+    public static function array_cartesian(array $arrays): array
     {
-        $result = array(array());
-        foreach ($arrays as $pVals) {
-            $tmp = array();
-            foreach ($result as $resultItem) {
-                foreach ($pVals as $pKey => $pVal) {
-                    $tmp[] = $resultItem + array($pKey => $pVal);
-                }
-            }
-            $result = $tmp;
+        if (!$arrays) {
+            return array(array());
         }
-        return $result;
-    }
 
-    public static function array_get_combinations_from_array(array $arrays)
-    {
-        $result = array(array());
-        foreach ($arrays as $pVals) {
-            $tmp = array();
-            foreach ($result as $resultItem) {
-                foreach ($pVals as $pKey => $pVal) {
-                    $tmp[] = $resultItem + array($pKey => $pVal);
-                }
+        $subset = array_shift($arrays);
+        $subArrays = static::array_cartesian($arrays);
+
+        $result = array();
+        foreach ($subset as $value) {
+            foreach ($subArrays as $p) {
+                array_unshift($p, $value);
+                $result[] = $p;
             }
-            $result = $tmp;
         }
+
         return $result;
     }
 }
