@@ -106,4 +106,19 @@ class Arrays
         }
         return $dupes;
     }
+
+    public static function array_get_combinations(array ...$arrays)
+    {
+        $result = array(array());
+        foreach ($arrays as $pVals) {
+            $tmp = array();
+            foreach ($result as $resultItem) {
+                foreach ($pVals as $pKey => $pVal) {
+                    $tmp[] = $resultItem + array($pKey => $pVal);
+                }
+            }
+            $result = $tmp;
+        }
+        return $result;
+    }
 }
