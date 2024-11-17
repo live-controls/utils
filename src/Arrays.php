@@ -121,4 +121,19 @@ class Arrays
         }
         return $result;
     }
+
+    public static function array_get_combinations_from_array(array $arrays)
+    {
+        $result = array(array());
+        foreach ($arrays as $pVals) {
+            $tmp = array();
+            foreach ($result as $resultItem) {
+                foreach ($pVals as $pKey => $pVal) {
+                    $tmp[] = $resultItem + array($pKey => $pVal);
+                }
+            }
+            $result = $tmp;
+        }
+        return $result;
+    }
 }
