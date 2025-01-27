@@ -35,7 +35,11 @@ class CSV
         fputcsv($output, is_null($attributes) ? $visibleFields : $attributes);
         foreach($modelsCollection as $model)
         {
-            fputcsv($output, is_null($attributes) ? $model->only($visibleFields) : array_values($model->only($attributes)));
+            $row = is_null($attributes) ? $model->only($visibleFields) : $model->only($attributes);
+            $row = array_map(function($value) {
+                return is_array($value) ? json_encode($value) : $value;
+            }, $row);
+            fputcsv($output, array_values($row));
         }
 
         rewind($output);
