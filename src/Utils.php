@@ -337,6 +337,32 @@ class Utils
     }
 
     /**
+     * Exports an array of data [['Max', '10'], ['Peter', '14']] to a valid CSV string
+     * 
+     * @param array $data
+     * @param string $separator
+     * @param string $lineEnding
+     * 
+     * @return string
+     */
+    public static function exportCSV(array $data, string $separator = ",", string $lineEnding = "\n"): string
+    {
+        $csvString = '';
+        foreach($data as $row)
+        {
+            $line = '';
+            foreach($row as $column){
+                if($line != ''){
+                    $line .= $separator;
+                }
+                $line .= $column;
+            }
+            $csvString .= $line.$lineEnding;
+        }
+        return $csvString;
+    }
+
+    /**
      * Create an URL based on different parts. It will check if the part starts or ends with / and react to it.
      * At the end it will check if the Url is valid
      *
