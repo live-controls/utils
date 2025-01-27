@@ -61,6 +61,8 @@ class CSV
     public static function exportArrayToFile(string $fileName, array $array): bool
     {
         $file = fopen($fileName, 'w');
+        $header = array_keys($array[0]);
+        fputcsv($file, $header);
         foreach($array as $field)
         {
             $field = array_map(function($value) {
@@ -75,6 +77,8 @@ class CSV
     public static function exportArrayToTemp(array $array, string $fileName = "output.csv"): \Illuminate\Http\Response
     {
         $output = fopen("php://temp", 'w');
+        $header = array_keys($array[0]);
+        fputcsv($output, $header);
         foreach($array as $field)
         {
             $field = array_map(function($value) {
