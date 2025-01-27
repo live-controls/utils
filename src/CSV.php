@@ -18,7 +18,11 @@ class CSV
         fputcsv($file, is_null($attributes) ? $visibleFields : $attributes);
         foreach($modelsCollection as $model)
         {
-            fputcsv($file, is_null($attributes) ? $model->only($visibleFields) : array_values($model->only($attributes)));
+            $row = is_null($attributes) ? $model->only($visibleFields) : $model->only($attributes);
+            $row = array_map(function($value) {
+                return is_array($value) ? json_encode($value) : $value;
+            }, $row);
+            fputcsv($file, array_values($row));
         }
         fclose($file);
         return true;
@@ -40,6 +44,43 @@ class CSV
                 return is_array($value) ? json_encode($value) : $value;
             }, $row);
             fputcsv($output, array_values($row));
+        }
+
+        rewind($output);
+
+        $content = stream_get_contents($output);
+
+        fclose($output);
+
+        return Response::make($content, 200, [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="'.$fileName.'"',
+        ]);
+    }
+
+    public static function exportArrayToFile(string $fileName, array $array): bool
+    {
+        $file = fopen($fileName, 'w');
+        foreach($array as $field)
+        {
+            $field = array_map(function($value) {
+                return is_array($value) ? json_encode($value) : $value;
+            }, $field);
+            fputcsv($file, $field);
+        }
+        fclose($file);
+        return true;
+    }
+
+    public static function exportArrayToTemp(array $array, string $fileName = "output.csv"): \Illuminate\Http\Response
+    {
+        $output = fopen("php://temp", 'w');
+        foreach($array as $field)
+        {
+            $field = array_map(function($value) {
+                return is_array($value) ? json_encode($value) : $value;
+            }, $field);
+            fputcsv($output, array_values($field));
         }
 
         rewind($output);
