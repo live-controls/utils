@@ -635,6 +635,7 @@ class Utils
             'ics' => 'text/calendar',
             'jar' => 'application/x-jar',
             'jp2' => 'image/jp2',
+            'jpg' => 'image/jpg',
             'jpeg' => 'image/jpg',
             'js' => 'application/x-javascript',
             'json' => 'text/json',
