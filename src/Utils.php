@@ -258,30 +258,31 @@ class Utils
      */
     public static function isValidCPF(string $cpf): bool
     {
-        $cpf = preg_replace('/[^0-9]/', '', $cpf);
-        $cpf = ltrim($cpf, '0');
-        if (strlen($cpf) !== 11) {
-            return false;
+        $cpf = preg_replace('/\D/', '', $cpf); // Remove non-numeric characters
+        if (strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)) {
+            return false; // Invalid length or repeated digits (00000000000, 11111111111, etc.)
         }
-        if (preg_match('/(\d)\1{9}/', $cpf)) {
-            return false;
-        }
+
+        // First digit calculation
         $sum = 0;
         for ($i = 0; $i < 9; $i++) {
-            $sum += $cpf[$i] * (10 - $i);
+            $sum += (int)$cpf[$i] * (10 - $i);
         }
         $remainder = $sum % 11;
-        $firstDigit = $remainder < 2 ? 0 : 11 - $remainder;
-        if ($cpf[9] !== $firstDigit) {
+        $firstDigit = ($remainder < 2) ? 0 : 11 - $remainder;
+        if ((int)$cpf[9] !== $firstDigit) {
             return false;
         }
+
+        // Second digit calculation
         $sum = 0;
         for ($i = 0; $i < 10; $i++) {
-            $sum += $cpf[$i] * (11 - $i);
+            $sum += (int)$cpf[$i] * (11 - $i);
         }
         $remainder = $sum % 11;
-        $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
-        return $cpf[10] === $secondDigit;
+        $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
+        
+        return (int)$cpf[10] === $secondDigit;
     }
 
     /**
