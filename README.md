@@ -172,6 +172,14 @@ echo stringContains('Test', 'T'); //returns true
 echo stringContains('Test', 'Q'); //returns false
 ```
 
+
+#### isValidCPFCNPJ
+Checks if the CPF/CNPJ number is valid
+
+```php
+echo isValidCPFCNPJ('UM_CPF_OU_CNPJ_VALIDO'); //returns true if is CPF or CNPJ
+```
+
 #### isValidCPF
 Checks if the CPF number is valid
 

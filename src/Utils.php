@@ -240,6 +240,17 @@ class Utils
     }
 
     /**
+     * Checks if the CPF/CNPJ number is valid
+     *
+     * @param string $cpfCnpj
+     * @return boolean
+     */
+    public static function isValidCPFCNPJ(string $cpfCnpj): bool
+    {
+        return static::isValidCPF($cpfCnpj) || static::isValidCNPJ($cpfCnpj);
+    }
+
+    /**
      * Checks if the CPF number is valid
      *
      * @param string $cpf
