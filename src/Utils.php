@@ -292,30 +292,32 @@ class Utils
      */
     public static function isValidCNPJ(string $cnpj)
     {
-        $cnpj = preg_replace('/[^0-9]/', '', $cnpj);
-        $cnpj = ltrim($cnpj, '0');
-        if (strlen($cnpj) !== 14) {
+        $cnpj = preg_replace('/\D/', '', $cnpj); // Remove non-numeric characters
+        if (strlen($cnpj) !== 14 || preg_match('/(\d)\1{13}/', $cnpj)) {
             return false;
         }
-        if (preg_match('/(\d)\1{12}/', $cnpj)) {
-            return false;
-        }
+
+        // Calculation of the first verification digit
+        $weightsFirst = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
         $sum = 0;
         for ($i = 0; $i < 12; $i++) {
-            $sum += $cnpj[$i] * (15 - $i);
+            $sum += $cnpj[$i] * $weightsFirst[$i];
         }
         $remainder = $sum % 11;
-        $firstDigit = $remainder < 2 ? 0 : 11 - $remainder;
-        if ($cnpj[12] !== $firstDigit) {
+        $firstDigit = ($remainder < 2) ? 0 : 11 - $remainder;
+        if ((int) $cnpj[12] !== $firstDigit) {
             return false;
         }
+
+        // Calculation of the second verification digit
+        $weightsSecond = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
         $sum = 0;
         for ($i = 0; $i < 13; $i++) {
-            $sum += $cnpj[$i] * (16 - $i);
+            $sum += $cnpj[$i] * $weightsSecond[$i];
         }
         $remainder = $sum % 11;
-        $secondDigit = $remainder < 2 ? 0 : 11 - $remainder;
-        return $cnpj[13] === $secondDigit;
+        $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
+        return (int) $cnpj[13] === $secondDigit;
     }
 
     /**
