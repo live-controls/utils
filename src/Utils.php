@@ -734,4 +734,16 @@ class Utils
         $extension = $explodedFileName[count($explodedFileName) - 1];
         return $map[$extension] ?? null;
     }
+
+    /**
+     * Returns the filename and extension (if set) from an URL
+     *
+     * @param string $url
+     * @param boolean $withExtension
+     * @return string
+     */
+    public static function getFilenameFromUrl(string $url, bool $withExtension = true): string
+    {
+        return $withExtension ? basename(parse_url($url, PHP_URL_PATH)) : pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_FILENAME);
+    }
 }
