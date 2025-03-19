@@ -3,6 +3,8 @@
 namespace LiveControls\Utils;
 
 use Exception;
+use InvalidArgumentException;
+use RuntimeException;
 use Transliterator;
 
 class Utils
@@ -745,5 +747,19 @@ class Utils
     public static function getFilenameFromUrl(string $url, bool $withExtension = true): string
     {
         return $withExtension ? basename(parse_url($url, PHP_URL_PATH)) : pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_FILENAME);
+    }
+
+    public static function getExtensionFromUrl(string $url): string
+    {
+        if (empty($url)) {
+            throw new InvalidArgumentException("The URL can not be empty.");
+        }
+        $url = strtok($url, '?');
+        $url = strtok($url, '#');
+        $fileName = basename($url);
+        if (empty($fileName)) {
+            throw new RuntimeException("Can't extract filename from URL $url.");
+        }
+        return pathinfo($fileName, PATHINFO_EXTENSION);
     }
 }
