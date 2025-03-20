@@ -242,6 +242,34 @@ class Utils
     }
 
     /**
+     * Formats a numeric only representation 11222333000181 of a CNPJ to a human readable one 11.222.333/0001-81
+     *
+     * @param string $cnpjNumeric
+     * @return string
+     */
+    public static function formatCNPJ(string $cnpjNumeric): string {
+        $cnpjStr = str_pad($cnpjNumeric, 14, '0', STR_PAD_LEFT);
+        if (strlen($cnpjStr) !== 14 || !ctype_digit($cnpjStr)) {
+            throw new Exception("Invalid CNPJ!");
+        }
+        return substr($cnpjStr, 0, 2) . '.' . substr($cnpjStr, 2, 3) . '.' . substr($cnpjStr, 5, 3) . '/' . substr($cnpjStr, 8, 4) . '-' . substr($cnpjStr, 12, 2);
+    }
+
+    /**
+     * Formats a numeric only representation 12345678900 of a CPF to a human readable one 123.456.789-00
+     *
+     * @param string $cpfNumeric
+     * @return string
+     */
+    public static function formatCPF(string $cpfNumeric): string {
+        $cpfStr = str_pad($cpfNumeric, 11, '0', STR_PAD_LEFT);
+        if (strlen($cpfStr) !== 11 || !ctype_digit($cpfStr)) {
+            throw new Exception("Invalid CPF!");
+        }
+        return substr($cpfStr, 0, 3) . '.' . substr($cpfStr, 3, 3) . '.' . substr($cpfStr, 6, 3) . '-' . substr($cpfStr, 9, 2);
+    }
+
+    /**
      * Checks if the CPF/CNPJ number is valid
      *
      * @param string $cpfCnpj
