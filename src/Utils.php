@@ -248,6 +248,7 @@ class Utils
      * @return string
      */
     public static function formatCNPJ(string $cnpjNumeric): string {
+        $cnpjNumeric = static::toNumeric($cnpjNumeric);
         $cnpjStr = str_pad($cnpjNumeric, 14, '0', STR_PAD_LEFT);
         if (strlen($cnpjStr) !== 14 || !ctype_digit($cnpjStr)) {
             throw new Exception("Invalid CNPJ!");
@@ -262,6 +263,7 @@ class Utils
      * @return string
      */
     public static function formatCPF(string $cpfNumeric): string {
+        $cpfNumeric = static::toNumeric($cpfNumeric);
         $cpfStr = str_pad($cpfNumeric, 11, '0', STR_PAD_LEFT);
         if (strlen($cpfStr) !== 11 || !ctype_digit($cpfStr)) {
             throw new Exception("Invalid CPF!");
