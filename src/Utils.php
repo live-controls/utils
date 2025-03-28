@@ -792,4 +792,26 @@ class Utils
         }
         return pathinfo($fileName, PATHINFO_EXTENSION);
     }
+
+    /**
+     * Fixes brazilian mobile phone numbers by adding an additional 9 where necessary
+     *
+     * @param string $number The phone number inclusive the 55 for brazil! Ex. 553112345678
+     * @return string
+     */
+    public static function fixBrazilianMobilePhone(string $number): string
+    {
+        $number = preg_replace('/\D/', '', $number);
+        if (substr($number, 0, 2) == "55") {
+            $number = substr($number, 2);
+        }
+
+        if (strlen($number) == 10) {
+            $areaCode = substr($number, 0, 2);
+            $localNumber = substr($number, 2);
+            $number = $areaCode.'9'.$localNumber;
+        }
+        return "55".$number;
+    }
+
 }
