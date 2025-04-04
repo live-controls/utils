@@ -814,4 +814,15 @@ class Utils
         return "55".$number;
     }
 
+    /**
+     * Normalizes the string from São Paulo or São Paulo to sao paulo
+     *
+     * @param string $str
+     * @return string
+     */
+    public static function normalizeString(string $str): string
+    {
+        return strtolower(trim(transliterator_transliterate('Any-Latin; Latin-ASCII', $str)));
+    }
+
 }
