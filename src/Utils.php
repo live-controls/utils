@@ -822,7 +822,7 @@ class Utils
      */
     public static function normalizeString(string $str): string
     {
-        return strtolower(trim(transliterator_transliterate('Any-Latin; Latin-ASCII', $str)));
+        return strtolower(trim(static::toLatin($str)));
     }
 
 }
