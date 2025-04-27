@@ -2,6 +2,7 @@
 
 namespace LiveControls\Utils;
 
+use Carbon\Carbon;
 use Exception;
 use InvalidArgumentException;
 use RuntimeException;
@@ -116,7 +117,7 @@ class Utils
         return $newValue;
     }
 
-    public static function number2Currency(float $number, string $locale = 'en', string $currency = null)
+    public static function number2Currency(float $number, string $locale = 'en', ?string $currency = null)
     {
         //Check if numberformatter is loaded before trying to access it
         if(!class_exists('NumberFormatter', false))
@@ -823,6 +824,48 @@ class Utils
     public static function normalizeString(string $str): string
     {
         return strtolower(trim(static::toLatin($str)));
+    }
+
+    /**
+     * Returns the previous timespan as an array 'previousFrom', 'previousTo'. The new values are already in Carbon. If $simple is set to true, the plain difference in days will be returned, so a full month won't return the full month before but 31 days before! 
+     * 
+     * @param Carbon $from
+     * @param Carbon $to
+     * @param boolean $simple
+     * @return array
+     */
+    public static function previousTimespan(Carbon $from, Carbon $to, bool $simple = false): array
+    {
+        if(!$simple && $from->isStartOfMonth() && $to->isEndOfMonth()){
+            //Should return the previous month
+            return [
+                'previousFrom' => $from->copy()->subMonth(),
+                'previousTo' => $to->copy()->subMonth()
+            ];
+        }elseif(!$simple && $from->isStartOfYear() && $to->isEndOfYear()){
+            //Should return the previous year
+            return [
+                'previousFrom' => $from->copy()->subYear(),
+                'previousTo' => $to->copy()->subYear(),
+            ];
+        }
+        else
+        {
+            //If simple is set to true, we ignore anything like full month or full year and just return the plain days
+            $difference = $from->diffInDays($to);
+            if($difference == 0){
+                //If they are on the same day we can subtract only a single day
+                return [
+                    'previousFrom' => $from->copy()->subDay(),
+                    'previousTo' => $from->copy()->subDay(),
+                ];
+            }
+            $difference = $difference + 2; //Add two days, to add $from and $to
+            return [
+                'previousFrom' => $from->copy()->subDays($difference),
+                'previousTo' => $to->copy()->subDays($difference),
+            ];
+        }       
     }
 
 }
