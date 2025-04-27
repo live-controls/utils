@@ -836,13 +836,13 @@ class Utils
      */
     public static function previousTimespan(Carbon $from, Carbon $to, bool $simple = false): array
     {
-        if(!$simple && $from->isStartOfMonth() && $to->isEndOfMonth()){
+        if(!$simple && $from->day == 1 && $to->day == $to->endOfMonth()->day && $from->month == $to->month && $from->year == $to->year){
             //Should return the previous month
             return [
                 'previousFrom' => $from->copy()->subMonth(),
                 'previousTo' => $to->copy()->subMonth()
             ];
-        }elseif(!$simple && $from->isStartOfYear() && $to->isEndOfYear()){
+        }elseif(!$simple && $from->day == 1 && $from->month == 1 && $to->day == 31 && $to->month == 12 && $from->year == $to->year){
             //Should return the previous year
             return [
                 'previousFrom' => $from->copy()->subYear(),
