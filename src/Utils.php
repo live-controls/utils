@@ -124,7 +124,7 @@ class Utils
         {
             throw new Exception('NumberFormatter class is required, but couldn\'t be found!');
         }
-        
+
         $nf = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
         if(!is_null($currency))
@@ -136,7 +136,7 @@ class Utils
 
     /**
      * Converts an array to string with a delimiter
-     * 
+     *
      * @param array $array
      * @param string $delimiter
      * @return string
@@ -146,7 +146,7 @@ class Utils
         $str = '';
         foreach($array as $key => $value)
         {
-            
+
             $str .= $value;
             if($key != count($array) - 1)
             {
@@ -191,7 +191,7 @@ class Utils
         foreach($variables as $var => $val){
             $formula = str_replace($var, $val, $formula);
         }
-        
+
         try {
             $evaluated = eval('return ('.$formula.');');
             return is_numeric($evaluated) ? $evaluated : null;
@@ -314,7 +314,7 @@ class Utils
         }
         $remainder = $sum % 11;
         $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
-        
+
         return (int)$cpf[10] === $secondDigit;
     }
 
@@ -385,11 +385,11 @@ class Utils
 
     /**
      * Exports an array of data [['Max', '10'], ['Peter', '14']] to a valid CSV string
-     * 
+     *
      * @param array $data
      * @param string $separator
      * @param string $lineEnding
-     * 
+     *
      * @return string
      */
     public static function exportCSV(array $data, string $separator = ",", string $lineEnding = "\n"): string
@@ -827,8 +827,8 @@ class Utils
     }
 
     /**
-     * Returns the previous timespan as an array 'previousFrom', 'previousTo'. The new values are already in Carbon. If $simple is set to true, the plain difference in days will be returned, so a full month won't return the full month before but 31 days before! 
-     * 
+     * Returns the previous timespan as an array 'previousFrom', 'previousTo'. The new values are already in Carbon. If $simple is set to true, the plain difference in days will be returned, so a full month won't return the full month before but 31 days before!
+     *
      * @param Carbon $from
      * @param Carbon $to
      * @param boolean $simple
@@ -853,19 +853,19 @@ class Utils
         {
             //If simple is set to true, we ignore anything like full month or full year and just return the plain days
             $difference = $from->diffInDays($to);
-            if($difference == 0){
+            if($difference < 1){
                 //If they are on the same day we can subtract only a single day
                 return [
                     'previousFrom' => $from->copy()->subDay(),
                     'previousTo' => $from->copy()->subDay(),
                 ];
             }
-            $difference = $difference + 2; //Add two days, to add $from and $to
+            $difference = round($difference); //Will round the difference to evade problems with 29.999999999 values which should be 30
             return [
                 'previousFrom' => $from->copy()->subDays($difference),
                 'previousTo' => $to->copy()->subDays($difference),
             ];
-        }       
+        }
     }
 
 }
