@@ -868,4 +868,32 @@ class Utils
         }
     }
 
+    /**
+     * Checks if the date string is a valid date
+     *
+     * @param string $dateString Needs to be in format DD/MM
+     * @return boolean
+     */
+    public static function isValidDate(string $dateString): bool
+    {
+        [$day, $month] = explode('/',$dateString);
+        return checkdate((int)$day, (int)$month, 2000);
+    }
+
+    /**
+     * Returns true if the startTime is after the endTime
+     *
+     * @param string $startTime Needs to be in HH:MM format
+     * @param string $endTime Needs to be in HH:MM format
+     * @return boolean
+     */
+    public static function isStartAfterEndTime(string $startTime, string $endTime): bool
+    {
+        [$startHours, $startMinutes] = explode(':', $startTime);
+        [$endHours, $endMinutes] = explode(':', $endTime);
+        $startTime = Carbon::createFromTime($startHours, $startMinutes);
+        $endTime = Carbon::createFromTime($endHours, $endMinutes);
+        return $startTime > $endTime;
+    }
+
 }
