@@ -877,7 +877,7 @@ class Utils
     public static function isValidDate(string $dateString): bool
     {
         [$day, $month] = explode('/',$dateString);
-        return checkdate((int)$day, (int)$month, 2000);
+        return checkdate((int)$month, (int)$day, 2000);
     }
 
     /**
