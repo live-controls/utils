@@ -19,7 +19,7 @@ class AB
     {
         $modelId = !is_int($model) ? $model->getKey() : $model;
         return Cache::remember("ab_variant_{$modelId}_{$salt}", now()->endOfDay(), function() use($modelId, $salt){
-            $crc = empty($salt) ? $modelId : crc32($modelId.$salt);
+            $crc = empty($salt) && is_int($modelId) ? $modelId : crc32($modelId.$salt);
             return $crc % 2 === 0 ? 1 : 2;
         });
     }
