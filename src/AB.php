@@ -44,6 +44,6 @@ class AB
         if($variant != 1 && $variant != 2){
             throw new Exception("Invalid variant {$variant}, needs to be either 1/A or 2/B!");
         }
-        return self::getVariantForModel($model, $salt) === $variant;
+        return self::getVariantForModel($model, $salt) == $variant;
     }
 }
