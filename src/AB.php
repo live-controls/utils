@@ -17,7 +17,7 @@ class AB
      */
     public static function getVariantForModel(Model|int $model, string $salt = ""): int
     {
-        $modelId = !is_int($model) ? $model->{$model->primaryKey} : $model;
+        $modelId = !is_int($model) ? $model->getKey() : $model;
         return Cache::remember("ab_variant_{$modelId}_{$salt}", now()->endOfDay(), function() use($modelId, $salt){
             $crc = crc32($modelId.$salt);
             return $crc % 2 === 0 ? 1 : 2;
