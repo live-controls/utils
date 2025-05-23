@@ -5,6 +5,7 @@ namespace LiveControls\Utils;
 use Carbon\Carbon;
 use Exception;
 use InvalidArgumentException;
+use RoundingMode;
 use RuntimeException;
 use Transliterator;
 
@@ -894,6 +895,19 @@ class Utils
         $startTime = Carbon::createFromTime($startHours, $startMinutes);
         $endTime = Carbon::createFromTime($endHours, $endMinutes);
         return $startTime > $endTime;
+    }
+
+    /**
+     * Divides the value $num safely or returns 0
+     *
+     * @param int|float $num
+     * @param int|float $denom
+     * @param RoundingMode|int $prec
+     * @return int|float
+     */
+    public static function safeDivide(int|float $num, int|float $denom, RoundingMode|int $prec): int|float
+    {
+        return $denom > 0 ? round($num / $denom, $prec) : 0;
     }
 
 }
