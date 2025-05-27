@@ -766,6 +766,7 @@ class Utils
 
         $explodedFileName = explode('.', $fileName);
         $extension = $explodedFileName[count($explodedFileName) - 1];
+        $extension = explode('?', $extension)[0];
         return $map[$extension] ?? null;
     }
 
