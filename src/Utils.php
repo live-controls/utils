@@ -917,9 +917,9 @@ class Utils
      * @param string $string
      * @param string $tag
      * @param boolean $withEndTag
-     * @return void
+     * @return string
      */
-    public static function stripTag(string $string, string $tag, bool $withEndTag = false)
+    public static function stripTag(string $string, string $tag, bool $withEndTag = false): string
     {
         return $withEndTag ? preg_replace('/<\/?'.$tag.'\s*[^>]*>/i', '', $string) : preg_replace('/<'.$tag.'\s*[^>]*>/i', '', $string);
     }
@@ -930,9 +930,9 @@ class Utils
      * @param string $string
      * @param string $tag
      * @param boolean $withEndTag
-     * @return void
+     * @return string
      */
-    public static function stripTags(string $string, array $tags, bool $withEndTags = false)
+    public static function stripTags(string $string, array $tags, bool $withEndTags = false): string
     {
         foreach($tags as $tag){
             if(!is_string($tag)){
@@ -941,6 +941,19 @@ class Utils
             $string = self::stripTag($string, $tag, $withEndTags);
         }
         return $string;
+    }
+
+    /**
+     * Replaces a tag with a certain string
+     *
+     * @param string $string
+     * @param string $tag
+     * @param string $replacement
+     * @return string
+     */
+    public static function replaceTag(string $string, string $tag, string $replacement):string
+    {
+        return preg_replace('/<'.$tag.'\s*[^>]*>/i', $replacement, $string);
     }
 
 }
