@@ -911,4 +911,36 @@ class Utils
         return $denom > 0 ? round($num / $denom, $prec) : 0;
     }
 
+    /**
+     * Removes the tag from a string with or without endtag '\</tag>'
+     *
+     * @param string $string
+     * @param string $tag
+     * @param boolean $withEndTag
+     * @return void
+     */
+    public static function stripTag(string $string, string $tag, bool $withEndTag = false)
+    {
+        return $withEndTag ? preg_replace('/<\/?'.$tag.'\s*[^>]*>/i', '', $string) : preg_replace('/<'.$tag.'\s*[^>]*>/i', '', $string);
+    }
+
+    /**
+     * Removes all tags from a string with or without endtag '\</tag>'
+     *
+     * @param string $string
+     * @param string $tag
+     * @param boolean $withEndTag
+     * @return void
+     */
+    public static function stripTags(string $string, array $tags, bool $withEndTags = false)
+    {
+        foreach($tags as $tag){
+            if(!is_string($tag)){
+                throw new Exception("Invalid type for tag ".gettype($tag));
+            }
+            $string = self::stripTag($string, $tag, $withEndTags);
+        }
+        return $string;
+    }
+
 }
