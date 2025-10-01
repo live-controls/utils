@@ -956,4 +956,30 @@ class Utils
         return preg_replace('/<'.$tag.'\s*[^>]*>/i', $replacement, $string);
     }
 
+    /**
+     * Returns an array of dates based on the startDate and the payment periods.
+     * Example: 30/60/90 would return a Carbon for 30, 60 and 90 days later.
+     * 
+     * @param Carbon $startDate
+     * @param string $periodString
+     * @return array
+     */
+    public static function periodToDates(Carbon $startDate, string $periodString): array
+    {
+        $periods = explode('/', $periodString);
+        $lastPeriod = 0;
+        $dates = [];
+        foreach($periods as $period){
+            if(filter_var($period, FILTER_VALIDATE_INT) === false){
+                throw new Exception("Invalid value for period: ".$period);
+            }
+            if($period < $lastPeriod){
+                throw new Exception("{$period} needs to be bigger than {$lastPeriod}");
+            }
+            $lastPeriod = $period;
+            $dates[] = $startDate->copy()->addDays($period);
+        }
+        return $dates;
+    }
+
 }
