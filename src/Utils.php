@@ -973,6 +973,9 @@ class Utils
             if(filter_var($period, FILTER_VALIDATE_INT) === false){
                 throw new Exception("Invalid value for period: ".$period);
             }
+            
+            $period = (int)$period; //Convert string to integer
+
             if($period < $lastPeriod){
                 throw new Exception("{$period} needs to be bigger than {$lastPeriod}");
             }
