@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Enums;
+namespace LiveControls\Utils\Enums;
 
 enum SocialSecurityNumberTypes: int
 {
