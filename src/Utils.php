@@ -2,6 +2,7 @@
 
 namespace LiveControls\Utils;
 
+use App\Enums\SocialSecurityNumberTypes;
 use Carbon\Carbon;
 use Exception;
 use InvalidArgumentException;
@@ -353,6 +354,23 @@ class Utils
         $remainder = $sum % 11;
         $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
         return (int) $cnpj[13] === $secondDigit;
+    }
+
+    /**
+     * Returns the SocialSecurityNumberType of the $ssn string
+     *
+     * @param string $ssn
+     * @return SocialSecurityNumberTypes
+     */
+    public static function getSocialSecurityNumberType(string $ssn): SocialSecurityNumberTypes
+    {
+        if(self::isValidCPF($ssn)){
+            return SocialSecurityNumberTypes::CPF;
+        }elseif(self::isValidCNPJ($ssn)){
+            return SocialSecurityNumberTypes::CNPJ;
+        }else{
+            return SocialSecurityNumberTypes::INVALID;
+        }
     }
 
     /**
