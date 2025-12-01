@@ -1003,4 +1003,30 @@ class Utils
         return $dates;
     }
 
+    /**
+     * Converts to MD format from a html string.
+     *
+     * @param string $html
+     * @return string
+     */
+    public static function convertHtmlToMD(string $html): string
+    {
+        $html = str_replace(["\r\n", "\r"], "\n", $html);
+        $html = preg_replace('/<p[^>]*>/i', "\n\n", $html);
+        $html = str_replace(['</p>'], "\n\n", $html);
+        $html = str_replace(['<br>', '<br/>', '<br />'], "\n", $html);
+        $html = preg_replace_callback('/<ul[^>]*>(.*?)<\/ul>/is', function ($m) {
+            return preg_replace('/<li[^>]*>(.*?)<\/li>/is', "- $1\n", $m[1]);
+        }, $html);
+        $html = preg_replace_callback('/<ol[^>]*>(.*?)<\/ol>/is', function ($m) {
+            $i = 1;
+            return preg_replace_callback('/<li[^>]*>(.*?)<\/li>/is', function ($li) use (&$i) {
+                return ($i++) . ". " . $li[1] . "\n";
+            }, $m[1]);
+        }, $html);
+        $html = strip_tags($html);
+        $html = preg_replace("/\n{3,}/", "\n\n", $html);
+        return trim($html);
+    }
+
 }
