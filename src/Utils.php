@@ -1029,4 +1029,23 @@ class Utils
         return trim($html);
     }
 
+    /**
+     * Will normalize the following values: string, int, float, Carbon to a normal carbon value
+     *
+     * @param string|int|float|Carbon $value
+     * @return Carbon
+     */
+    public static function normalizeToCarbon(string|int|float|Carbon $value): Carbon
+    {
+        if($value instanceof Carbon){
+            return $value;
+        }
+
+        if(is_numeric($value)){
+            return Carbon::createFromTimestamp($value);
+        }
+
+        return Carbon::parse($value);
+    }
+
 }
