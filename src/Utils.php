@@ -2,7 +2,7 @@
 
 namespace LiveControls\Utils;
 
-use App\Enums\SocialSecurityNumberTypes;
+use LiveControls\Utils\Enums\SocialSecurityNumberTypes;
 use Carbon\Carbon;
 use Exception;
 use InvalidArgumentException;
