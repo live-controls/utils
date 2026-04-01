@@ -1048,4 +1048,18 @@ class Utils
         return Carbon::parse($value);
     }
 
+    /**
+     * Converts seconds into a readable string. Uses the format from $formatString.
+     *
+     * @param int $seconds
+     * @param string $formatString
+     * @return string
+     */
+    function secondsToTime(int $seconds, string $formatString = '%a days, %h hours, %i minutes and %s seconds'): string
+    {
+        $dtF = new \DateTime('@0');
+        $dtT = new \DateTime("@$seconds");
+        return $dtF->diff($dtT)->format($formatString);
+    }
+
 }
