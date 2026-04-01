@@ -1055,7 +1055,7 @@ class Utils
      * @param string $formatString
      * @return string
      */
-    function secondsToTime(int $seconds, string $formatString = '%a days, %h hours, %i minutes and %s seconds'): string
+    public static function secondsToTime(int $seconds, string $formatString = '%a days, %h hours, %i minutes and %s seconds'): string
     {
         $dtF = new \DateTime('@0');
         $dtT = new \DateTime("@$seconds");
