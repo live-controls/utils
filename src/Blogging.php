@@ -14,7 +14,7 @@ class Blogging
     public static function estimatedReadingTime(string $text, int $wordsPerMinute = 200): int
     {
         $wordsCount = str_word_count($text);
-        return round($wordsCount / $wordsPerMinute);
+        return (int)round($wordsCount / $wordsPerMinute);
     }
 
     /**

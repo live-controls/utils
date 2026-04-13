@@ -17,7 +17,7 @@ class Utils
      * From: https://stackoverflow.com/a/28434327
      *
      * @param integer $num
-     * @return void
+     * @return int
      */
     public static function countNumber(int $num): int
     {
@@ -60,13 +60,11 @@ class Utils
     public static function number2Text(int $numberInCents, string $locale = 'pt_BR'): string
     {
         $number = $numberInCents / 100;
-        if (!is_numeric($number)) {
-            return false;
-        }
+
         $numero_extenso = '';
         $arr = explode(".", $number);
         $inteiro = $arr[0];
-        if (isset($arr[1])) {
+        if(isset($arr[1])){
             $decimos = strlen($arr[1]) == 1 ? $arr[1] . '0' : $arr[1];
         }
 
@@ -214,7 +212,7 @@ class Utils
         if(!is_numeric($value)){
             return null;
         }
-        return $value;
+        return (int)$value;
     }
 
     /**
@@ -294,24 +292,24 @@ class Utils
     public static function isValidCPF(string $cpf): bool
     {
         $cpf = preg_replace('/\D/', '', $cpf); // Remove non-numeric characters
-        if (strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)) {
+        if(strlen($cpf) !== 11 || preg_match('/(\d)\1{10}/', $cpf)){
             return false; // Invalid length or repeated digits (00000000000, 11111111111, etc.)
         }
 
         // First digit calculation
         $sum = 0;
-        for ($i = 0; $i < 9; $i++) {
+        for($i = 0; $i < 9; $i++){
             $sum += (int)$cpf[$i] * (10 - $i);
         }
         $remainder = $sum % 11;
         $firstDigit = ($remainder < 2) ? 0 : 11 - $remainder;
-        if ((int)$cpf[9] !== $firstDigit) {
+        if((int)$cpf[9] !== $firstDigit){
             return false;
         }
 
         // Second digit calculation
         $sum = 0;
-        for ($i = 0; $i < 10; $i++) {
+        for($i = 0; $i < 10; $i++){
             $sum += (int)$cpf[$i] * (11 - $i);
         }
         $remainder = $sum % 11;
@@ -329,27 +327,27 @@ class Utils
     public static function isValidCNPJ(string $cnpj)
     {
         $cnpj = preg_replace('/\D/', '', $cnpj); // Remove non-numeric characters
-        if (strlen($cnpj) !== 14 || preg_match('/(\d)\1{13}/', $cnpj)) {
+        if(strlen($cnpj) !== 14 || preg_match('/(\d)\1{13}/', $cnpj)){
             return false;
         }
 
         // Calculation of the first verification digit
         $weightsFirst = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
         $sum = 0;
-        for ($i = 0; $i < 12; $i++) {
-            $sum += $cnpj[$i] * $weightsFirst[$i];
+        for($i = 0; $i < 12; $i++){
+            $sum += (int)$cnpj[$i] * $weightsFirst[$i];
         }
         $remainder = $sum % 11;
         $firstDigit = ($remainder < 2) ? 0 : 11 - $remainder;
-        if ((int) $cnpj[12] !== $firstDigit) {
+        if((int)$cnpj[12] !== $firstDigit){
             return false;
         }
 
         // Calculation of the second verification digit
         $weightsSecond = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
         $sum = 0;
-        for ($i = 0; $i < 13; $i++) {
-            $sum += $cnpj[$i] * $weightsSecond[$i];
+        for($i = 0; $i < 13; $i++){
+            $sum += (int)$cnpj[$i] * $weightsSecond[$i];
         }
         $remainder = $sum % 11;
         $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
@@ -727,19 +725,14 @@ class Utils
             'p7r' => 'application/x-pkcs7-certreqresp',
             'p7s' => 'application/pkcs7-signature',
             'pdf' => 'application/pdf',
-            'pdf' => 'application/octet-stream',
-            'pem' => 'application/x-x509-user-cert',
             'pem' => 'application/x-pem-file',
             'pgp' => 'application/pgp',
-            'php' => 'application/x-httpd-php',
             'php' => 'text/php',
-            'php' => 'application/x-httpd-php-source',
             'png' => 'image/png',
             'ppt' => 'application/powerpoint',
             'doc' => 'application/msword',
             'pptx' => 'application/vnd.openxmlformats-officedocument.presentationml.presentation',
             'psd' => 'application/x-photoshop',
-            'psd' => 'image/vnd.adobe.photoshop',
             'ra' => 'audio/x-realaudio',
             'ram' => 'audio/x-pn-realaudio',
             'rar' => 'application/rar',
@@ -946,8 +939,8 @@ class Utils
      * Removes all tags from a string with or without endtag '\</tag>'
      *
      * @param string $string
-     * @param string $tag
-     * @param boolean $withEndTag
+     * @param array $tags
+     * @param bool $withEndTags
      * @return string
      */
     public static function stripTags(string $string, array $tags, bool $withEndTags = false): string
@@ -1060,6 +1053,31 @@ class Utils
         $dtF = new \DateTime('@0');
         $dtT = new \DateTime("@$seconds");
         return $dtF->diff($dtT)->format($formatString);
+    }
+
+    /**
+     * Tries to convert a value into a string or returns null if it wasn't possible.
+     *
+     * @param mixed $value
+     * @return string|null
+     */
+    public static function safeString(mixed $value): ?string
+    {
+        return is_scalar($value) ? (string)$value : null;
+    }
+
+    /**
+     * Tries to fetch a string out of an array with its key and returns null if it can't be converted or if
+     * the key does not exist.
+     *
+     * @param array $array
+     * @param string $key
+     * @return string|null
+     */
+    public static function safeStringFromArray(array $array, string $key): ?string
+    {
+        $value = $array[$key] ?? null;
+        return self::safeString($value);
     }
 
 }

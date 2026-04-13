@@ -7,12 +7,12 @@ class Arrays
     /**
      * Returns the value of $array[$key] or the $default value
      *
-     * @param [type] $key
+     * @param mixed $key
      * @param array $array
-     * @param [type] $default
+     * @param mixed $default
      * @return mixed
      */
-    public static function array_get($key, array $array, $default = null) : mixed{
+    public static function array_get(mixed $key, array $array, mixed $default = null) : mixed{
         if(array_key_exists($key, $array)){
             return $array[$key];
         }
@@ -30,7 +30,8 @@ class Arrays
     public static function array_remove(mixed $keyValue, array &$array, bool $isValue = false){
         $newArray = [];
         if($isValue){
-            return static::array_remove_value($keyValue, $array);
+            static::array_remove_value($keyValue, $array);
+            return;
         }
         foreach($array as $oldKey => $oldValue){
             if($oldKey != $keyValue){
