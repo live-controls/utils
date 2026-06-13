@@ -2,6 +2,8 @@
 
 namespace LiveControls\Utils;
 
+use LiveControls\Utils\Str;
+
 class Blogging
 {
     /**
@@ -36,10 +38,10 @@ class Blogging
         preg_match_all($url_regex, $text, $urls);
 
         foreach ($urls[0] as $url) {
-            if(Utils::isNullOrEmpty($linkText)){
+            if(Str::isNullOrEmpty($linkText)){
                 $linkText = $url;
             }
-            $text = str_replace($url, "<a href='$url'".($targetBlank ? " target='_blank'" : '').(Utils::isNullOrEmpty($class) ? '' : " class='".$class."'").">$linkText</a>", $text);
+            $text = str_replace($url, "<a href='$url'".($targetBlank ? " target='_blank'" : '').(Str::isNullOrEmpty($class) ? '' : " class='".$class."'").">$linkText</a>", $text);
         }
 
         return $text;

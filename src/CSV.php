@@ -7,6 +7,48 @@ use Illuminate\Support\Facades\Response;
 
 class CSV
 {
+    /**
+     * Imports CSV from a file and returns an array with headers as first line
+     *
+     * @param string $fileName
+     * @return array
+     */
+    public static function importCSV(string $fileName)
+    {
+        $csv = array_map('str_getcsv', file($fileName));
+        array_walk($csv, function(&$a) use ($csv) {
+            $a = array_combine($csv[0], $a);
+        });
+        array_shift($csv);
+        return $csv;
+    }
+    
+    /**
+     * Exports an array of data [['Max', '10'], ['Peter', '14']] to a valid CSV string
+     *
+     * @param array $data
+     * @param string $separator
+     * @param string $lineEnding
+     *
+     * @return string
+     */
+    public static function exportCSV(array $data, string $separator = ",", string $lineEnding = "\n"): string
+    {
+        $csvString = '';
+        foreach($data as $row)
+        {
+            $line = '';
+            foreach($row as $column){
+                if($line != ''){
+                    $line .= $separator;
+                }
+                $line .= $column;
+            }
+            $csvString .= $line.$lineEnding;
+        }
+        return $csvString;
+    }
+
     public static function exportToFile(string $fileName, Collection $modelsCollection, array|null $attributes = null): bool
     {
         $visibleFields = array_diff(

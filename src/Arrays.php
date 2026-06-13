@@ -133,4 +133,26 @@ class Arrays
 
         return $result;
     }
+
+    /**
+     * Converts an array to string with a delimiter
+     *
+     * @param array $array
+     * @param string $delimiter
+     * @return string
+     */
+    public static function array_to_string(array $array, string $delimiter = ', '): string
+    {
+        $str = '';
+        foreach($array as $key => $value)
+        {
+
+            $str .= $value;
+            if($key != count($array) - 1)
+            {
+                $str .= $delimiter;
+            }
+        }
+        return $str;
+    }
 }
