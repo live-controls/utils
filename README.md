@@ -5,6 +5,7 @@
 An utilities package for Laravel 11+, it includes various categories of useful methods to ease the life of a developer and
 speed up the process.
 
+**To use the old system with a single Utils class, use the versions v1.x**
 
 ## Classes
 
