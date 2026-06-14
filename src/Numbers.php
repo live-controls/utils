@@ -128,7 +128,7 @@ class Numbers
         return $denom > 0 ? round($num / $denom, $prec) : 0;
     }
 
-    public static function number2Currency(float $number, string $locale = 'en', ?string $currency = null)
+    public static function number2Currency(float $number, string $locale = 'en', ?string $currency = null): string|false
     {
         //Check if numberformatter is loaded before trying to access it
         if(!class_exists('\NumberFormatter', false))
