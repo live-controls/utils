@@ -344,6 +344,12 @@ class Files
         return $withExtension ? basename(parse_url($url, PHP_URL_PATH)) : pathinfo(parse_url($url, PHP_URL_PATH), PATHINFO_FILENAME);
     }
 
+    /**
+     * Returns the extension based on the url
+     *
+     * @param string $url
+     * @return string
+     */
     public static function getExtensionFromUrl(string $url): string
     {
         if (empty($url)) {
