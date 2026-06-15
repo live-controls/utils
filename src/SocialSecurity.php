@@ -8,19 +8,26 @@ use LiveControls\Utils\Enums\SocialSecurityNumberTypes;
 class SocialSecurity
 {
     /**
-     * Formats a numeric only representation 11222333000181 of a CNPJ to a human readable one 11.222.333/0001-81
+     * Formats a numeric only representation or the new system 11222333000181 of a CNPJ to a human readable one 11.222.333/0001-81
      *
-     * @param string $cnpjNumeric
+     * @param string $cnpj
      * @return string
      */
-    public static function formatCNPJ(string $cnpjNumeric): string 
+    public static function formatCNPJ(string $cnpj): string
     {
-        $cnpjNumeric = Numbers::toNumeric($cnpjNumeric);
-        $cnpjStr = str_pad($cnpjNumeric, 14, '0', STR_PAD_LEFT);
-        if (strlen($cnpjStr) !== 14 || !ctype_digit($cnpjStr)) {
-            throw new Exception("Invalid CNPJ!");
+        $cnpj = strtoupper(
+            preg_replace('/[^A-Z0-9]/i', '', $cnpj)
+        );
+
+        if (strlen($cnpj) !== 14) {
+            throw new Exception('Invalid CNPJ!');
         }
-        return substr($cnpjStr, 0, 2) . '.' . substr($cnpjStr, 2, 3) . '.' . substr($cnpjStr, 5, 3) . '/' . substr($cnpjStr, 8, 4) . '-' . substr($cnpjStr, 12, 2);
+
+        return substr($cnpj, 0, 2) . '.' .
+            substr($cnpj, 2, 3) . '.' .
+            substr($cnpj, 5, 3) . '/' .
+            substr($cnpj, 8, 4) . '-' .
+            substr($cnpj, 12, 2);
     }
 
     /**
@@ -89,36 +96,55 @@ class SocialSecurity
      * Checks if the CNPJ number is valid
      *
      * @param string $cnpj
-     * @return boolean
+     * @return bool
      */
-    public static function isValidCNPJ(string $cnpj)
+    public static function isValidCNPJ(string $cnpj): bool
     {
-        $cnpj = preg_replace('/\D/', '', $cnpj); // Remove non-numeric characters
-        if(strlen($cnpj) !== 14 || preg_match('/(\d)\1{13}/', $cnpj)){
+        $cnpj = strtoupper(preg_replace('/[^A-Z0-9]/i', '', $cnpj));
+
+        if(strlen($cnpj) !== 14 || !preg_match('/^[A-Z0-9]{12}[0-9]{2}$/', $cnpj)){
             return false;
         }
 
-        // Calculation of the first verification digit
-        $weightsFirst = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
+        $weightsFirst  = [5,4,3,2,9,8,7,6,5,4,3,2];
+        $weightsSecond = [6,5,4,3,2,9,8,7,6,5,4,3,2];
+
         $sum = 0;
         for($i = 0; $i < 12; $i++){
-            $sum += (int)$cnpj[$i] * $weightsFirst[$i];
+            $sum += self::cnpjCharValue($cnpj[$i]) * $weightsFirst[$i];
         }
+
         $remainder = $sum % 11;
-        $firstDigit = ($remainder < 2) ? 0 : 11 - $remainder;
-        if((int)$cnpj[12] !== $firstDigit){
+        $dv1 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+        if((int)$cnpj[12] !== $dv1){
             return false;
         }
 
-        // Calculation of the second verification digit
-        $weightsSecond = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2];
         $sum = 0;
         for($i = 0; $i < 13; $i++){
-            $sum += (int)$cnpj[$i] * $weightsSecond[$i];
+            $value = ($i === 12)
+                ? $dv1
+                : self::cnpjCharValue($cnpj[$i]);
+
+            $sum += $value * $weightsSecond[$i];
         }
+
         $remainder = $sum % 11;
-        $secondDigit = ($remainder < 2) ? 0 : 11 - $remainder;
-        return (int) $cnpj[13] === $secondDigit;
+        $dv2 = ($remainder < 2) ? 0 : 11 - $remainder;
+
+        return (int)$cnpj[13] === $dv2;
+    }
+
+    /**
+     * Support method for isValidCNPJ to calculate the char value.
+     *
+     * @param string $char
+     * @return integer
+     */
+    private static function cnpjCharValue(string $char): int
+    {
+        return ord($char) - 48;
     }
 
     /**
