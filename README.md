@@ -85,3 +85,20 @@ An exception that can be used to show not implemented methods.
 
 #### HasABTests
 A trait that will handle AB tests for Laravel models.
+
+In your Model add the following:
+```php
+use \LiveControls\Utils\HasABTests;
+```
+
+You can then use it the following:
+```php
+$model = \App\Models\User::find(1);
+$variant = 1; //Can be either 1/A or 2/B
+$salt = 'feature_1'; //Can be a name of the feature you want to check or can be leave out to have it general.
+$model->hasVariant($variant, $salt); //Will return true if its the models variant
+
+$model->getVariantForModel($salt); //Returns either 1 or 2, depending on the models variant.
+$model->has_variant_a; //Returns true if model has variant a. Does not support a salt.
+$model->has_variant_b; //Returns true if model has variant b. Does not support a salt.
+```
