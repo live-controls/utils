@@ -12,6 +12,32 @@ speed up the process.
 ### AB
 An easy way to make AB tests based on variants.
 
+#### getVariantForModel
+Gets the variant for the model (Either 1 or 2) based on their primaryKey. Use the salt to have different outcomes for different tests
+
+Example:
+```php
+$model = \App\Models\User::find(1);
+
+$variant = \LiveControls\Utils\AB::getVariantForModel($model, 'feature_a');
+
+dd($variant); //Returns either 1 or 2
+```
+
+#### hasVariant
+Check if the Model is inside the selected variant based on their primaryKey. Use the salt to have different outcomes for different tests
+
+Example:
+```php
+$variant = 1; //Can also be A or 2/B
+$model = \App\Models\User::find(1);
+
+$hasVariant = hasVariant($model, $variant, 'feature_a');
+
+dd($hasVariant); //Would return true if model is inside variant with the selected salt
+```
+
+
 ### Arrays
 An array helper to add some functions that are present in Laravel collections, but not in PHP arrays and more.
 
