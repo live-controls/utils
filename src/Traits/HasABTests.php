@@ -21,7 +21,6 @@ trait HasABTests
     /**
      * Gets the variant for the current model (Either 1 or 2) based on their primaryKey. Use the salt to have different outcomes for different tests
      *
-     * @param Model|int $model
      * @param string $salt
      * @return integer
      */
