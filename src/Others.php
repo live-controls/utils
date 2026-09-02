@@ -60,4 +60,35 @@ class Others
         }
         return "55".$number;
     }
+
+    /**
+     * Converts a longitude, latitude e radiusInKm into an array of min/max latitude and longitude
+     *
+     * @param float $longitude
+     * @param float $latitude
+     * @param float $radiusInKm
+     * @return array{
+     *  minLatitude: float,
+     *  maxLatitude: float,
+     *  minLongitude: float,
+     *  maxLongitude: float,
+     * }
+     */
+    public static function getCoordinateBountries(float $longitude, float $latitude, float $radiusInKm): array
+    {
+        $kmPerOneDegreeOfLatitude = 111.32;
+        $latitudeDelta = $radiusInKm / $kmPerOneDegreeOfLatitude;
+        $longitudeDelta = $radiusInKm / ($kmPerOneDegreeOfLatitude * cos(deg2rad($latitude)));
+        $minLatitude = $latitude - $latitudeDelta;
+        $maxLatitude = $latitude + $latitudeDelta;
+        $minLongitude = $longitude - $longitudeDelta;
+        $maxLongitude = $longitude + $longitudeDelta;
+
+        return [
+            'minLatitude' => $minLatitude,
+            'maxLatitude' => $maxLatitude,
+            'minLongitude' => $minLongitude,
+            'maxLongitude' => $maxLongitude,
+        ];
+    }
 }
