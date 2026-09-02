@@ -62,8 +62,9 @@ class Others
     }
 
     /**
-     * Converts a longitude, latitude e radiusInKm into an array of min/max latitude and longitude
-     *
+     * Converts a longitude, latitude and radius in kilometers into an array containing the minimum
+     * and maximum latitude and longitude boundaries.
+     * 
      * @param float $longitude
      * @param float $latitude
      * @param float $radiusInKm
@@ -73,8 +74,39 @@ class Others
      *  minLongitude: float,
      *  maxLongitude: float,
      * }
+     * 
+     * @example
+     * //Find companies within 50km of the users location. You can use any other calculation afterwards, but this is
+     * //a good usage example with the Haversine expression.
+     * 
+     * $latitude = -19.4232;
+     * $longitude = -40.2152;
+     * $radiusInKm = 50;
+     * 
+     * $boundaries = self::getCoordinateBoundaries($longitude, $latitude, $radiusInKm);
+     * 
+     * $companies = Company::whereBetween('latitude', [
+     *  $boundaries['minLatitude'],
+     *  $boundaries['maxLatitude']
+     * ])
+     * ->whereBetween('longitude', [
+     *  $boundaries['minLongitude'],
+     *  $boundaries['maxLongitude']
+     * ])
+     * ->selectRaw(
+     * '(6371 * acos(
+     *  cos(radians(?)) *
+     *  cos(raians(latitude)) *
+     *  cos(radians(longitude) - radians(?)) +
+     *  sin(radians(?)) *
+     *  sin(radians(latitude
+     *  )) AS distance',
+     *  [$latitude, $longitude, $latitude],
+     * )->having('distance', '<=', $radiusInKm)
+     * ->orderBy('distance')
+     * ->get();
      */
-    public static function getCoordinateBountries(float $longitude, float $latitude, float $radiusInKm): array
+    public static function getCoordinateBoundaries(float $longitude, float $latitude, float $radiusInKm): array
     {
         $kmPerOneDegreeOfLatitude = 111.32;
         $latitudeDelta = $radiusInKm / $kmPerOneDegreeOfLatitude;
